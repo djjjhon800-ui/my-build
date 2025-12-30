@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页 - 年轻创意者的数字空间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #1a1a1a;
+            color: #f8f9fa;
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 900;
+        }
+        .fun-title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+        }
+        .skill-tag {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 500;
+            margin: 4px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .ripple:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        #p5-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="fun-title text-2xl font-bold gradient-text">我的空间</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-white hover:text-orange-400 transition-colors duration-300">首页</a>
+                    <a href="about.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">关于我</a>
+                    <a href="portfolio.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">作品集</a>
+                    <a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">联系我</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-white">首页</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-300">关于我</a>
+                <a href="portfolio.html" class="block px-3 py-2 text-gray-300">作品集</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-300">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="min-h-screen flex items-center justify-center relative pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="floating">
+                <h1 class="hero-title text-6xl md:text-8xl lg:text-9xl mb-6 gradient-text" id="main-title">
+                    创意无限
+                </h1>
+            </div>
+            <div class="mb-8">
+                <p class="text-xl md:text-2xl text-gray-300 mb-4" id="subtitle">
+                    年轻创意者的数字空间
+                </p>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto" id="description">
+                    热爱设计、编程和创新的年轻人，致力于用技术改变世界，用创意点亮生活。
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="portfolio.html" class="ripple bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    查看作品
+                </a>
+                <a href="about.html" class="border-2 border-teal-400 text-teal-400 px-8 py-3 rounded-full font-semibold hover:bg-teal-400 hover:text-white transition-all duration-300 transform hover:scale-105">
+                    了解更多
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 个人特色展示 -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text">我的特色</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">创新思维</h3>
+                    <p class="text-gray-300">始终保持对新事物的好奇心，勇于尝试前沿技术和设计理念，用创新思维解决复杂问题。</p>
+                </div>
+                <div class="card-hover bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">快速学习</h3>
+                    <p class="text-gray-300">具备强大的学习能力和适应能力，能够快速掌握新技能，在不同领域都能迅速成长并创造价值。</p>
+                </div>
+                <div class="card-hover bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-white">团队协作</h3>
+                    <p class="text-gray-300">善于与团队成员沟通协作，能够在团队中发挥积极作用，共同完成目标并创造卓越的成果。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能预览 -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl md:text-5xl font-bold text-center mb-16 gradient-text">技能专长</h2>
+            <div class="text-center mb-8">
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">UI/UX设计</span>
+                    <span class="skill-tag">数据分析</span>
+                    <span class="skill-tag">项目管理</span>
+                    <span class="skill-tag">创意思维</span>
+                    <span class="skill-tag">团队协作</span>
+                    <span class="skill-tag">快速学习</span>
+                    <span class="skill-tag">问题解决</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="portfolio.html" class="ripple inline-block bg-gradient-to-r from-orange-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    查看完整作品集
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-black bg-opacity-50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    © 2024 个人网站. 用心创造，用爱分享.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

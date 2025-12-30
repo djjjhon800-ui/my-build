@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我 - 建立连接与合作</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #1a1a1a;
+            color: #f8f9fa;
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 900;
+        }
+        .fun-title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .contact-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.2);
+        }
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+        .submit-btn {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        }
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+        .social-link:hover {
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            font-weight: 600;
+        }
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: #9ca3af;
+            display: none;
+        }
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        .faq-item.active .faq-question::after {
+            transform: rotate(180deg);
+        }
+        .faq-question::after {
+            content: '▼';
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="fun-title text-2xl font-bold gradient-text">我的空间</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">首页</a>
+                    <a href="about.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">关于我</a>
+                    <a href="portfolio.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">作品集</a>
+                    <a href="contact.html" class="text-white hover:text-orange-400 transition-colors duration-300">联系我</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300">首页</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-300">关于我</a>
+                <a href="portfolio.html" class="block px-3 py-2 text-gray-300">作品集</a>
+                <a href="contact.html" class="block px-3 py-2 text-white">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="hero-title text-5xl md:text-7xl mb-6 gradient-text">联系我</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                让我们一起创造美好的数字体验，期待与您的合作
+            </p>
+        </div>
+    </section>
+
+    <!-- 联系信息卡片 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="contact-card rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">邮箱联系</h3>
+                    <p class="text-gray-400 mb-4">zhangming@example.com</p>
+                    <div class="status-indicator"></div>
+                    <span class="text-sm text-gray-500">通常24小时内回复</span>
+                </div>
+
+                <div class="contact-card rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">电话咨询</h3>
+                    <p class="text-gray-400 mb-4">+86 138-0000-0000</p>
+                    <div class="status-indicator"></div>
+                    <span class="text-sm text-gray-500">工作日 9:00-18:00</span>
+                </div>
+
+                <div class="contact-card rounded-2xl p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">办公地址</h3>
+                    <p class="text-gray-400 mb-4">北京市朝阳区<br>科技园区A座1001</p>
+                    <div class="status-indicator"></div>
+                    <span class="text-sm text-gray-500">欢迎预约面谈</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系表单 -->
+    <section class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">发送消息</h2>
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">姓名 *</label>
+                            <input type="text" id="name" name="name" required class="form-input" placeholder="请输入您的姓名">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">邮箱 *</label>
+                            <input type="email" id="email" name="email" required class="form-input" placeholder="请输入您的邮箱">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">主题 *</label>
+                            <input type="text" id="subject" name="subject" required class="form-input" placeholder="请输入消息主题">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">消息内容 *</label>
+                            <textarea id="message" name="message" rows="5" required class="form-input" placeholder="请详细描述您的需求或想法"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn w-full">
+                            发送消息
+                        </button>
+                    </form>
+                </div>
+
+                <div>
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">合作方式</h2>
+                    <div class="space-y-6">
+                        <div class="contact-card rounded-xl p-6">
+                            <h3 class="text-xl font-bold mb-3">项目合作</h3>
+                            <p class="text-gray-400 mb-4">
+                                有完整的项目需求？我可以为您提供从概念到上线的全流程服务，
+                                包括需求分析、设计开发、测试部署等各个环节。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                预计响应时间：2-4小时
+                            </div>
+                        </div>
+
+                        <div class="contact-card rounded-xl p-6">
+                            <h3 class="text-xl font-bold mb-3">技术咨询</h3>
+                            <p class="text-gray-400 mb-4">
+                                需要技术方案建议或架构设计？我可以为您提供专业的技术咨询服务，
+                                帮助您做出最佳的技术决策。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                预计响应时间：1-2小时
+                            </div>
+                        </div>
+
+                        <div class="contact-card rounded-xl p-6">
+                            <h3 class="text-xl font-bold mb-3">学习交流</h3>
+                            <p class="text-gray-400 mb-4">
+                                想要交流学习心得或技术经验？我很乐意与您分享知识，
+                                共同探讨技术发展和行业趋势。
+                            </p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                预计响应时间：当天回复
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社交媒体链接 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-12 gradient-text">关注我</h2>
+            <div class="flex justify-center space-x-8">
+                <a href="#" class="social-link" title="Twitter">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="LinkedIn">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="GitHub">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="Dribbble">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0zm9.568 7.375c.53 1.104.846 2.343.846 3.625 0 .211-.012.42-.035.625-.791-.171-1.736-.315-2.803-.315-2.848 0-5.354.735-6.576 1.297-.171-.35-.342-.713-.513-1.076 2.197-.93 4.015-2.422 5.281-4.176zm-2.688 1.297c1.076 0 2.066.144 2.948.375-1.297 2.197-3.015 4.015-5.281 5.281-.375-.171-.74-.342-1.076-.513.514-1.222 1.297-3.729 1.297-6.576 0-.791-.144-1.736-.315-2.803.211-.023.42-.035.627-.035zm-5.88 2.203c-2.066 0-3.943.342-5.281.735-.171-.375-.342-.74-.513-1.076 1.297-.514 3.015-1.297 5.281-1.297 1.076 0 2.066.144 2.948.375-.171.791-.315 1.736-.315 2.803 0 2.848.735 5.354 1.297 6.576-.35.171-.713.342-1.076.513-1.222-.514-3.729-1.297-6.576-1.297-.791 0-1.736.144-2.803.315-.023-.211-.035-.42-.035-.627 0-1.283.315-2.521.846-3.625.93-.144 1.876-.315 2.948-.315zm-5.88 1.297c-.375.171-.74.342-1.076.513-1.222.514-3.729 1.297-6.576 1.297-.791 0-1.736-.144-2.803-.315.171-1.076.315-2.066.315-2.948 0-2.066-.342-3.943-.735-5.281.375-.171.74-.342 1.076-.513 1.297.514 3.015 1.297 5.281 1.297 1.076 0 2.066-.144 2.948-.375.171.791.315 1.736.315 2.803 0 2.848-.735 5.354-1.297 6.576zm-2.203-3.729c0-1.076-.144-2.066-.375-2.948.791.171 1.736.315 2.803.315 2.066 0 3.943-.342 5.281-.735.171.375.342.74.513 1.076-1.297.514-3.015 1.297-5.281 1.297-1.076 0-2.066-.144-2.948-.375.171-.791.315-1.736.315-2.803 0-2.848-.735-5.354-1.297-6.576.35-.171.713-.342 1.076-.513 1.222.514 3.729 1.297 6.576 1.297.791 0 1.736-.144 2.803-.315.023.211.035.42.035.627 0 1.283-.315 2.521-.846 3.625-.93.144-1.876.315-2.948.315z"/>
+                    </svg>
+                </a>
+                <a href="#" class="social-link" title="Instagram">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+            <p class="text-gray-400 mt-8">
+                关注我的社交媒体，获取最新动态和创意分享
+            </p>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">常见问题</h2>
+            <div class="space-y-4">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        您接受什么类型的项目合作？
+                    </div>
+                    <div class="faq-answer">
+                        我接受各种类型的Web开发、移动应用开发、UI/UX设计、数据分析等项目合作。无论是个人项目还是企业级应用，我都会根据您的需求提供专业的解决方案。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        项目开发周期通常需要多长时间？
+                    </div>
+                    <div class="faq-answer">
+                        项目周期取决于具体需求和复杂度。简单的网站项目通常需要2-4周，复杂的Web应用可能需要1-3个月。我会在详细了解需求后给出准确的时间估算。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        如何确保项目质量？
+                    </div>
+                    <div class="faq-answer">
+                        我采用敏捷开发方法，分阶段交付成果。每个阶段都会进行代码审查和测试，确保功能完整性和用户体验。同时提供一定期限的免费维护服务。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        是否提供技术咨询服务？
+                    </div>
+                    <div class="faq-answer">
+                        是的，我提供技术架构设计、技术选型建议、性能优化等咨询服务。可以帮助您在项目初期做出正确的技术决策，避免后期的技术债务。
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        项目完成后是否提供维护服务？
+                    </div>
+                    <div class="faq-answer">
+                        项目交付后，我提供1-3个月的免费维护期，修复可能出现的bug。之后可以根据需要签订长期维护合同，确保系统的稳定运行。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-black bg-opacity-50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    © 2024 个人网站. 用心创造，用爱分享.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 表单提交处理
+            const contactForm = document.getElementById('contact-form');
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 获取表单数据
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                
+                // 验证表单
+                if (!data.name || !data.email || !data.subject || !data.message) {
+                    showNotification('请填写所有必填字段', 'error');
+                    return;
+                }
+                
+                // 模拟提交
+                const submitBtn = this.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = '发送中...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    showNotification('消息发送成功！我会尽快回复您。', 'success');
+                    contactForm.reset();
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 2000);
+            });
+
+            // FAQ 折叠功能
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', function() {
+                    const isActive = item.classList.contains('active');
+                    
+                    // 关闭所有其他FAQ
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // 切换当前FAQ
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            // 社交链接动画
+            const socialLinks = document.querySelectorAll('.social-link');
+            socialLinks.forEach((link, index) => {
+                anime({
+                    targets: link,
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    scale: [0.8, 1],
+                    duration: 600,
+                    easing: 'easeOutElastic(1, .8)',
+                    delay: 1000 + (index * 100)
+                });
+            });
+
+            // 联系卡片动画
+            const contactCards = document.querySelectorAll('.contact-card');
+            const cardObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            opacity: [0, 1],
+                            translateY: [30, 0],
+                            duration: 800,
+                            easing: 'easeOutExpo'
+                        });
+                        cardObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            contactCards.forEach(card => {
+                card.style.opacity = '0';
+                cardObserver.observe(card);
+            });
+        });
+
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            } text-white`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // 显示动画
+            anime({
+                targets: notification,
+                translateX: [300, 0],
+                opacity: [0, 1],
+                duration: 500,
+                easing: 'easeOutExpo'
+            });
+            
+            // 3秒后自动消失
+            setTimeout(() => {
+                anime({
+                    targets: notification,
+                    translateX: [0, 300],
+                    opacity: [1, 0],
+                    duration: 500,
+                    easing: 'easeInExpo',
+                    complete: () => {
+                        notification.remove();
+                    }
+                });
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

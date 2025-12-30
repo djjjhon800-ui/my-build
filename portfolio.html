@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品集 - 创意项目与技术展示</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #1a1a1a;
+            color: #f8f9fa;
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 900;
+        }
+        .fun-title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .project-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+        }
+        .filter-btn {
+            background: transparent;
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            transform: scale(1.05);
+        }
+        .skill-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 4px;
+            transition: width 2s ease;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="fun-title text-2xl font-bold gradient-text">我的空间</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">首页</a>
+                    <a href="about.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">关于我</a>
+                    <a href="portfolio.html" class="text-white hover:text-orange-400 transition-colors duration-300">作品集</a>
+                    <a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">联系我</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300">首页</a>
+                <a href="about.html" class="block px-3 py-2 text-gray-300">关于我</a>
+                <a href="portfolio.html" class="block px-3 py-2 text-white">作品集</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-300">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="hero-title text-5xl md:text-7xl mb-6 gradient-text">作品集</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                展示我的创意项目和技术成果，每一个作品都承载着独特的故事
+            </p>
+        </div>
+    </section>
+
+    <!-- 项目筛选器 -->
+    <section class="pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="filter-btn active" data-filter="all">全部项目</button>
+                <button class="filter-btn" data-filter="web">Web开发</button>
+                <button class="filter-btn" data-filter="mobile">移动应用</button>
+                <button class="filter-btn" data-filter="design">UI/UX设计</button>
+                <button class="filter-btn" data-filter="data">数据分析</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目网格 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                <!-- 项目卡片 1 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="web" data-project="project1">
+                    <img src="resources/project1.jpg" alt="电商网站项目" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">现代电商平台</h3>
+                        <p class="text-gray-400 mb-4">一个功能完整的B2C电商平台，包含商品展示、购物车、支付等核心功能。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">React</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">Node.js</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片 2 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="mobile" data-project="project2">
+                    <img src="resources/project2.jpg" alt="健康管理APP" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">健康管理APP</h3>
+                        <p class="text-gray-400 mb-4">帮助用户记录健康数据、制定运动计划的健康管理移动应用。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">React Native</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">Firebase</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">UI设计</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片 3 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="data" data-project="project3">
+                    <img src="resources/project3.jpg" alt="数据分析平台" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">数据分析平台</h3>
+                        <p class="text-gray-400 mb-4">企业级数据分析平台，提供实时数据可视化和深度分析功能。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">Python</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">Django</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">ECharts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片 4 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="design" data-project="project4">
+                    <img src="resources/hero-bg.jpg" alt="品牌设计系统" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">品牌设计系统</h3>
+                        <p class="text-gray-400 mb-4">为初创公司设计的完整品牌视觉识别系统和设计规范。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">Figma</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">品牌设计</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">设计系统</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片 5 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="web" data-project="project5">
+                    <img src="resources/profile.jpg" alt="社交媒体平台" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">社交媒体平台</h3>
+                        <p class="text-gray-400 mb-4">面向创作者的社交媒体平台，支持内容创作、分享和互动。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">Vue.js</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">GraphQL</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">WebSocket</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 项目卡片 6 -->
+                <div class="project-card rounded-2xl overflow-hidden cursor-pointer" data-category="mobile" data-project="project6">
+                    <img src="resources/project1.jpg" alt="学习教育APP" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">学习教育APP</h3>
+                        <p class="text-gray-400 mb-4">在线教育平台移动应用，提供个性化学习体验和进度跟踪。</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded text-sm">Flutter</span>
+                            <span class="px-2 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded text-sm">AI推荐</span>
+                            <span class="px-2 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded text-sm">视频播放</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能雷达图 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">技能分布</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div id="skills-chart" style="width: 100%; height: 400px;"></div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-white font-medium">前端开发</span>
+                            <span class="text-gray-400">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-white font-medium">后端开发</span>
+                            <span class="text-gray-400">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-white font-medium">UI/UX设计</span>
+                            <span class="text-gray-400">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-white font-medium">数据分析</span>
+                            <span class="text-gray-400">75%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="75"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-white font-medium">项目管理</span>
+                            <span class="text-gray-400">70%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="70"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目详情模态框 -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="modal-title" class="text-2xl font-bold gradient-text"></h2>
+                <button id="close-modal" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+            </div>
+            <div id="modal-body">
+                <!-- 动态内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-black bg-opacity-50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    © 2024 个人网站. 用心创造，用爱分享.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 项目数据
+        const projectData = {
+            project1: {
+                title: '现代电商平台',
+                description: '一个功能完整的B2C电商平台，采用现代化的技术栈和设计理念。',
+                features: [
+                    '响应式设计，支持多设备访问',
+                    '用户认证和授权系统',
+                    '商品搜索和筛选功能',
+                    '购物车和收藏功能',
+                    '安全的支付集成',
+                    '订单管理和跟踪'
+                ],
+                technologies: ['React', 'Node.js', 'MongoDB', 'Stripe API', 'JWT'],
+                image: 'resources/project1.jpg'
+            },
+            project2: {
+                title: '健康管理APP',
+                description: '帮助用户记录健康数据、制定运动计划的移动应用。',
+                features: [
+                    '健康数据可视化',
+                    '个性化运动计划',
+                    '营养摄入追踪',
+                    '社交分享功能',
+                    'AI健康建议',
+                    '数据同步和备份'
+                ],
+                technologies: ['React Native', 'Firebase', 'Health API', 'Machine Learning'],
+                image: 'resources/project2.jpg'
+            },
+            project3: {
+                title: '数据分析平台',
+                description: '企业级数据分析平台，提供实时数据可视化和深度分析。',
+                features: [
+                    '实时数据监控',
+                    '多维度数据分析',
+                    '自定义报表生成',
+                    '数据预测和趋势分析',
+                    '团队协作功能',
+                    'API数据集成'
+                ],
+                technologies: ['Python', 'Django', 'PostgreSQL', 'ECharts', 'Redis'],
+                image: 'resources/project3.jpg'
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 项目筛选功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // 更新按钮状态
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 筛选项目
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'block';
+                            anime({
+                                targets: card,
+                                opacity: [0, 1],
+                                scale: [0.8, 1],
+                                duration: 500,
+                                easing: 'easeOutElastic(1, .8)'
+                            });
+                        } else {
+                            anime({
+                                targets: card,
+                                opacity: [1, 0],
+                                scale: [1, 0.8],
+                                duration: 300,
+                                easing: 'easeInExpo',
+                                complete: function() {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            // 项目卡片点击事件
+            projectCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-project');
+                    if (projectData[projectId]) {
+                        showProjectModal(projectData[projectId]);
+                    }
+                });
+            });
+
+            // 模态框控制
+            const modal = document.getElementById('project-modal');
+            const closeModal = document.getElementById('close-modal');
+
+            closeModal.addEventListener('click', function() {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // 初始化技能图表
+            initSkillsChart();
+
+            // 技能条动画
+            const skillBars = document.querySelectorAll('.skill-progress');
+            const skillObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const width = entry.target.getAttribute('data-width');
+                        entry.target.style.width = width + '%';
+                        skillObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            skillBars.forEach(bar => {
+                skillObserver.observe(bar);
+            });
+        });
+
+        // 显示项目详情模态框
+        function showProjectModal(project) {
+            const modal = document.getElementById('project-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+
+            modalTitle.textContent = project.title;
+            modalBody.innerHTML = `
+                <img src="${project.image}" alt="${project.title}" class="w-full h-64 object-cover rounded-lg mb-6">
+                <p class="text-gray-300 mb-6">${project.description}</p>
+                <h3 class="text-xl font-bold mb-4 gradient-text">主要功能</h3>
+                <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
+                    ${project.features.map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
+                <h3 class="text-xl font-bold mb-4 gradient-text">技术栈</h3>
+                <div class="flex flex-wrap gap-2">
+                    ${project.technologies.map(tech => `
+                        <span class="px-3 py-1 bg-gradient-to-r from-orange-500 to-teal-400 text-white rounded-full text-sm">
+                            ${tech}
+                        </span>
+                    `).join('')}
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // 初始化技能雷达图
+        function initSkillsChart() {
+            const chartDom = document.getElementById('skills-chart');
+            const myChart = echarts.init(chartDom);
+
+            const option = {
+                backgroundColor: 'transparent',
+                radar: {
+                    indicator: [
+                        { name: '前端开发', max: 100 },
+                        { name: '后端开发', max: 100 },
+                        { name: 'UI/UX设计', max: 100 },
+                        { name: '数据分析', max: 100 },
+                        { name: '项目管理', max: 100 },
+                        { name: '团队协作', max: 100 }
+                    ],
+                    axisName: {
+                        color: '#f8f9fa',
+                        fontSize: 14
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'radar',
+                    data: [{
+                        value: [90, 85, 80, 75, 70, 85],
+                        name: '技能水平',
+                        areaStyle: {
+                            color: 'rgba(255, 107, 107, 0.2)'
+                        },
+                        lineStyle: {
+                            color: '#ff6b6b',
+                            width: 2
+                        },
+                        itemStyle: {
+                            color: '#4ecdc4'
+                        }
+                    }]
+                }]
+            };
+
+            myChart.setOption(option);
+
+            // 响应式
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+    </script>
+</body>
+</html>

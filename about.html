@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我 - 个人故事与成长历程</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #1a1a1a;
+            color: #f8f9fa;
+        }
+        .hero-title {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 900;
+        }
+        .fun-title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            z-index: 2;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: linear-gradient(to bottom, #ff6b6b, #4ecdc4);
+            z-index: 1;
+        }
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        .interest-tag {
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 500;
+            margin: 4px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .interest-tag:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        .profile-card {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-number {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 900;
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full bg-black bg-opacity-80 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="fun-title text-2xl font-bold gradient-text">我的空间</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">首页</a>
+                    <a href="about.html" class="text-white hover:text-orange-400 transition-colors duration-300">关于我</a>
+                    <a href="portfolio.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">作品集</a>
+                    <a href="contact.html" class="text-gray-300 hover:text-orange-400 transition-colors duration-300">联系我</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="index.html" class="block px-3 py-2 text-gray-300">首页</a>
+                <a href="about.html" class="block px-3 py-2 text-white">关于我</a>
+                <a href="portfolio.html" class="block px-3 py-2 text-gray-300">作品集</a>
+                <a href="contact.html" class="block px-3 py-2 text-gray-300">联系我</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="hero-title text-5xl md:text-7xl mb-6 gradient-text">关于我</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                一个充满激情的创意者，用代码和设计构建美好未来
+            </p>
+        </div>
+    </section>
+
+    <!-- 个人信息卡片 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left">
+                    <img src="resources/profile.jpg" alt="个人头像" class="w-48 h-48 rounded-full mx-auto md:mx-0 mb-8 border-4 border-gradient-to-r from-orange-500 to-teal-400">
+                    <h2 class="text-4xl font-bold mb-4 gradient-text">张明</h2>
+                    <p class="text-xl text-gray-300 mb-2">年龄：25岁</p>
+                    <p class="text-xl text-gray-300 mb-6">职业：全栈开发者 / 设计师</p>
+                    <p class="text-gray-400 leading-relaxed">
+                        我是一名充满激情的全栈开发者，拥有5年的开发经验。我热爱技术，追求创新，致力于用代码改变世界。
+                        在工作中，我注重用户体验，相信好的设计能够让产品更加出色。我喜欢挑战，不断学习新技术，
+                        希望能够创造出更多有价值的产品。
+                    </p>
+                </div>
+                <div class="profile-card rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center gradient-text">个人数据</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="stat-number gradient-text">50+</div>
+                            <p class="text-gray-300">完成项目</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-number gradient-text">5</div>
+                            <p class="text-gray-300">工作经验</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-number gradient-text">20+</div>
+                            <p class="text-gray-300">掌握技能</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="stat-number gradient-text">100%</div>
+                            <p class="text-gray-300">投入热情</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 兴趣爱好 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">兴趣爱好</h2>
+            <div class="text-center">
+                <div class="interest-tag">🎨 绘画设计</div>
+                <div class="interest-tag">💻 编程开发</div>
+                <div class="interest-tag">📚 阅读学习</div>
+                <div class="interest-tag">🎵 音乐创作</div>
+                <div class="interest-tag">🏃 运动健身</div>
+                <div class="interest-tag">🌍 旅行探索</div>
+                <div class="interest-tag">📷 摄影记录</div>
+                <div class="interest-tag">🍳 美食烹饪</div>
+                <div class="interest-tag">🎮 游戏娱乐</div>
+                <div class="interest-tag">🌱 植物养护</div>
+            </div>
+            <div class="mt-12 grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-gray-800 bg-opacity-30 rounded-xl">
+                    <div class="text-4xl mb-4">🎯</div>
+                    <h3 class="text-xl font-bold mb-2">专注创新</h3>
+                    <p class="text-gray-400">始终保持对新技术的关注，勇于尝试和创新</p>
+                </div>
+                <div class="text-center p-6 bg-gray-800 bg-opacity-30 rounded-xl">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold mb-2">团队协作</h3>
+                    <p class="text-gray-400">善于沟通协作，能够在团队中发挥积极作用</p>
+                </div>
+                <div class="text-center p-6 bg-gray-800 bg-opacity-30 rounded-xl">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h3 class="text-xl font-bold mb-2">持续成长</h3>
+                    <p class="text-gray-400">不断学习进步，追求个人和专业的成长</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 成长时间线 -->
+    <section class="py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">成长历程</h2>
+            <div class="space-y-8">
+                <div class="timeline-item">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">大学时期</h3>
+                            <span class="text-sm text-gray-400">2017-2021</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            就读于计算机科学与技术专业，系统学习了编程语言、数据结构、算法等基础知识。
+                            在校期间积极参与各种编程竞赛和项目实践，为日后的职业发展打下了坚实的基础。
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded-full text-sm">计算机科学</span>
+                            <span class="px-3 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded-full text-sm">编程竞赛</span>
+                            <span class="px-3 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded-full text-sm">项目实践</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">初入职场</h3>
+                            <span class="text-sm text-gray-400">2021-2022</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            加入一家创业公司担任前端开发工程师，负责用户界面的开发和优化。
+                            在这个角色中，我不仅提升了技术能力，还学会了如何在快节奏的环境中高效工作。
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded-full text-sm">前端开发</span>
+                            <span class="px-3 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded-full text-sm">团队协作</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">技能提升</h3>
+                            <span class="text-sm text-gray-400">2022-2023</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            转向全栈开发，学习后端技术和数据库管理。同时开始关注用户体验设计，
+                            参加各种设计思维培训，努力成为既懂技术又懂设计的复合型人才。
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded-full text-sm">全栈开发</span>
+                            <span class="px-3 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded-full text-sm">UI/UX设计</span>
+                            <span class="px-3 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded-full text-sm">项目管理</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="bg-gray-800 bg-opacity-50 rounded-xl p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-bold text-white">独立发展</h3>
+                            <span class="text-sm text-gray-400">2023-至今</span>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            开始独立承接项目，同时创建个人品牌。专注于创建既美观又实用的数字产品，
+                            帮助各种规模的企业实现数字化转型。持续学习新技术，保持对行业发展的敏感度。
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-orange-500 bg-opacity-20 text-orange-400 rounded-full text-sm">独立开发</span>
+                            <span class="px-3 py-1 bg-teal-500 bg-opacity-20 text-teal-400 rounded-full text-sm">产品设计</span>
+                            <span class="px-3 py-1 bg-purple-500 bg-opacity-20 text-purple-400 rounded-full text-sm">创业</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 价值观展示 -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">我的价值观</h2>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🚀</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">创新进取</h3>
+                    <p class="text-gray-400">不断追求创新，勇于挑战现状，用新技术和方法解决问题</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-teal-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">💎</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">品质至上</h3>
+                    <p class="text-gray-400">注重细节，追求卓越，确保每个项目都达到最高标准</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🤝</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">诚信合作</h3>
+                    <p class="text-gray-400">以诚信为本，与客户和合作伙伴建立长期信任关系</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl">🌱</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">持续成长</h3>
+                    <p class="text-gray-400">保持学习态度，不断提升自己，适应快速变化的世界</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-black bg-opacity-50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-orange-400 transition-colors duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    © 2024 个人网站. 用心创造，用爱分享.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // 页面特定的动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 时间线动画
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        anime({
+                            targets: entry.target,
+                            opacity: [0, 1],
+                            translateX: [-50, 0],
+                            duration: 800,
+                            easing: 'easeOutExpo'
+                        });
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            timelineItems.forEach(item => {
+                item.style.opacity = '0';
+                observer.observe(item);
+            });
+
+            // 兴趣标签动画
+            const interestTags = document.querySelectorAll('.interest-tag');
+            interestTags.forEach((tag, index) => {
+                anime({
+                    targets: tag,
+                    opacity: [0, 1],
+                    scale: [0.8, 1],
+                    duration: 500,
+                    easing: 'easeOutElastic(1, .8)',
+                    delay: 1000 + (index * 100)
+                });
+            });
+
+            // 统计数字动画
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const numberObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalValue = target.textContent;
+                        const numericValue = parseInt(finalValue.replace(/\D/g, ''));
+                        const suffix = finalValue.replace(/[\d,]/g, '');
+                        
+                        anime({
+                            targets: { value: 0 },
+                            value: numericValue,
+                            duration: 2000,
+                            easing: 'easeOutExpo',
+                            update: function(anim) {
+                                target.textContent = Math.round(anim.animatables[0].target.value) + suffix;
+                            }
+                        });
+                        
+                        numberObserver.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            statNumbers.forEach(number => {
+                numberObserver.observe(number);
+            });
+        });
+    </script>
+</body>
+</html>
